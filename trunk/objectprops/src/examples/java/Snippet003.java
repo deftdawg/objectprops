@@ -6,14 +6,25 @@ import java.io.IOException;
 
 import com.google.code.objectprops.ObjectPropertiesStore;
 
-/**
- * 
- * @author Michael Karneim
+/*
+ * This snippet demonstrates 
+ * - how to write objects into a properties file
+ * - how to read objects from a properties file
  */
 public class Snippet003 {
     
     public static void main(String[] args) throws IOException {
-        
+    	File file = File.createTempFile("myapp", ".properties");
+    	file.deleteOnExit();
+    	
+    	save(file);
+    	
+    	load(file);
+    }
+    
+    static void save(File file) throws IOException {
+    	System.out.println("writing objects into a properties file");
+    	
         Color[] colors = new Color[5];
         colors[0] = Color.BLACK;
         colors[1] = Color.BLUE;
@@ -29,26 +40,25 @@ public class Snippet003 {
         store.getDatabase().store( System.out, "My application settings");
         
         // save properties into file
-        File file = File.createTempFile("myapp", ".properties");        
         store.getDatabase().store( new FileOutputStream(file), "My application settings");
         
-        
-        
-        
-        
+    }
+    
+    static void load(File file) throws IOException {        
+        System.out.println("reading objects from a properties file");
+    	
         // create a new empty store
-        ObjectPropertiesStore anotherStore = new ObjectPropertiesStore();
+        ObjectPropertiesStore store = new ObjectPropertiesStore();
         
         // load properties from file
-        anotherStore.getDatabase().load( new FileInputStream(file));
+        store.getDatabase().load( new FileInputStream(file));
         
         // read the colors
-        Color[] retrieved = (Color[])anotherStore.readObject("colors", Color[].class);
-        for( int i=0; i<retrieved.length; ++i) {
-            System.out.println(retrieved[i]);
+        Color[] colors = (Color[])store.readObject("colors", Color[].class);
+        // print the colors to System.out
+        for( int i=0; i<colors.length; ++i) {
+            System.out.println(colors[i]);
         }
-        
-        file.deleteOnExit();        
         
     }
 }
