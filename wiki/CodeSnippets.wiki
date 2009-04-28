@@ -1,3 +1,5 @@
 #summary short but complete code samples for copy & paste
 
-Blah...
+  * [Snippet001]
+  * [Snippet002]
+  * [Snippet002]
