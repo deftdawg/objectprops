@@ -6,9 +6,10 @@ import java.io.IOException;
 
 import com.google.code.objectprops.ObjectPropertiesStore;
 
-/**
- * 
- * @author Michael Karneim
+/*
+ * This snippet demonstrates 
+ * - how to write an object into the ObjectPropertiesStore
+ * - how to read an object from the ObjectPropertiesStore
  */
 public class Snippet001 {
 

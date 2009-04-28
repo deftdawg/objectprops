@@ -9,14 +9,17 @@ import java.io.IOException;
 
 import com.google.code.objectprops.ObjectPropertiesStore;
 
-/**
- * 
- * @author Michael Karneim
+/*
+ * This snippet demonstrates 
+ * - how to write objects into a properties file
+ * - how to read objects from a properties file
  */
 public class Snippet003 {
     
     public static void main(String[] args) throws IOException {
-        
+    	
+    	//// writing objects into a properties file
+    	////
         Color[] colors = new Color[5];
         colors[0] = Color.BLACK;
         colors[1] = Color.BLUE;
@@ -36,9 +39,8 @@ public class Snippet003 {
         store.getDatabase().store( new FileOutputStream(file), "My application settings");
         
         
-        
-        
-        
+        //// reading objects from a properties file
+        ////
         // create a new empty store
         ObjectPropertiesStore anotherStore = new ObjectPropertiesStore();
         
