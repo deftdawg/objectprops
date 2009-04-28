@@ -10,7 +10,7 @@ public class QuickStart {
 
     public static void main(String[] args) throws Exception {
         //// Part 1: writing an object into the store        
-        // let's store some java.awt.Rectangle into the store
+        // let's store a java.awt.Rectangle into the store
         Rectangle rect = new Rectangle(100,10,400,300);
         
         // create a new and empty store
