@@ -1,5 +1,5 @@
 #sidebar CodeSnippets
-#summary writing / reading a rectangle
+#summary writing / reading an object
 {{{
 import java.awt.Rectangle;
 import java.io.IOException;
