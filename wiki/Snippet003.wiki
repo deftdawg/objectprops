@@ -1,4 +1,5 @@
 #sidebar CodeSnippets
+#summary writing to a file / reading from a file
 {{{
 import java.awt.Color;
 import java.io.File;
