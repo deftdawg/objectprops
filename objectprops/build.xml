@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<project name="objectprops" default="main" basedir=".">
+	<description>build the objectprops library</description>
+	
+	<property file="build.local.properties" />
+
+	<property name="project.version" value="1.0.0" />
+	<property name="project.title" value="ObjectProps" />
+	<property name="project.vendor" value="Michael Karneim" />
+	
+	<property name="compile.debug" value="true" />
+	<property name="compile.deprecation" value="false" />
+	<property name="compile.optimize" value="true" />
+
+	<!-- Folders and files -->
+	<property name="src.dir" location="${basedir}/src" />
+	<property name="src.main.java.dir" location="${src.dir}/main/java" />
+	<property name="src.examples.java.dir" location="${src.dir}/examples/java" />
+	<property name="src.test.dir" location="${src.dir}/test" />
+	<property name="src.meta-inf.dir" location="${src.dir}/META-INF" />
+
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="build.classes.dir" location="${build.dir}/classes" />
+	
+	<property name="build.bin.dir" location="${build.dir}/bin" />
+	<property name="build.src.dir" location="${build.dir}/src" />
+	<property name="build.project.dir" location="${build.dir}/project" />
+	<property name="build.manifest.dir" location="${build.dir}/manifest" />
+	<property name="build.manifest.file" location="${build.manifest.dir}/manifest.mf" />
+
+	<property name="dist.dir" location="${basedir}/dist" />
+	<property name="classes.jarfile" value="${dist.dir}/${ant.project.name}.jar"/>	
+	<property name="src.zipfile" value="${dist.dir}/${ant.project.name}-${project.version}-src.zip"/>
+	<property name="project.zipfile" value="${dist.dir}/${ant.project.name}-${project.version}-project.zip"/>
+	<property name="bin.zipfile" value="${dist.dir}/${ant.project.name}-${project.version}.zip"/>
+
+	<fileset id="build.classes.fileset" dir="${build.classes.dir}" description="Compiled classes without tests.">
+		<exclude name="**/*Test.class" />
+	</fileset>
+	
+	<path id="class.path">
+		<pathelement path="${currentenv.classpath}" />
+	</path>
+
+	<!--
+	###################################################################
+	####################         Targets           #################### -->
+	<target name="init">
+		<tstamp>
+			<format property="build.time" pattern="MMM/dd/yyyy hh:mm aa z"/>
+		</tstamp>		
+	</target>
+
+	<target name="clean" depends="init" description="Clean up all generated files.">
+		<delete dir="${dist.dir}" />
+		<delete dir="${build.dir}" />
+	</target>
+	
+	<target name="prepare-compile" depends="init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+	</target>
+
+	<target name="compile-main" depends="init, prepare-compile">
+		<javac classpathref="class.path" destdir="${build.classes.dir}" source="1.4" target="1.4" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+			<src path="${src.main.java.dir}" />
+		</javac>
+	</target>
+	
+	<target name="compile" depends="init, compile-main">
+	</target>
+	
+	<target name="prepare-dist" depends="init">
+		<delete dir="${dist.dir}" />
+		<mkdir dir="${dist.dir}" />
+	</target>
+
+	<target name="prepare-classes-jar" depends="init, prepare-compile">
+		<mkdir dir="${build.classes.dir}/META-INF" />
+		<copy todir="${build.classes.dir}/META-INF" >
+			<fileset dir="${basedir}" includes="readme.txt license.txt lgpl.txt 3rdparty-licenses.txt" />
+		</copy>
+	</target>
+	
+	<target name="prepare-manifest" depends="init" >
+		<delete dir="${build.manifest.dir}" />
+		<mkdir dir="${build.manifest.dir}" />
+	</target>
+		
+	<target name="create-classes-jar" depends="init, prepare-classes-jar, compile, prepare-dist, prepare-manifest" description="Create jar with all classes">
+		<jar destfile="${classes.jarfile}">
+			<fileset refid="build.classes.fileset" />			
+			<manifest>
+				<attribute name="Build-Date" value="${build.time}" />
+				<attribute name="Build-Version" value="${project.version}" />
+				<attribute name="Implementation-Title" value="${project.title}" />
+				<attribute name="Implementation-Version" value="${project.version}" />
+				<attribute name="Implementation-Vendor" value="${project.vendor}" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="create-src-zip" depends="init, prepare-dist" description="Creates a zip file with all sources.">
+		<delete dir="${build.src.dir}" />
+		<mkdir dir="${build.src.dir}" />
+		<mkdir dir="${build.src.dir}/META-INF" />
+		<copy todir="${build.src.dir}/META-INF" >
+			<fileset dir="${basedir}" includes="readme.txt license.txt lgpl.txt" />
+		</copy>
+		<copy todir="${build.src.dir}" >
+			<fileset dir="${src.main.java.dir}" />						
+		</copy>
+
+		<mkdir dir="${dist.dir}" />
+		<zip destfile="${src.zipfile}">
+			<fileset dir="${build.src.dir}" />
+		</zip>
+	</target>
+
+	<target name="create-bin-zip" depends="init, prepare-dist, create-classes-jar">
+		<property name="build.bin.content.dir" location="${build.bin.dir}/${ant.project.name}"/>
+		<delete dir="${build.bin.dir}" />
+		<mkdir dir="${build.bin.content.dir}" />
+		<copy file="${classes.jarfile}" todir="${build.bin.content.dir}" />
+		<copy todir="${build.bin.content.dir}">
+			<fileset dir="${basedir}" includes="readme.txt license.txt lgpl.txt" />
+		</copy>
+		<zip destfile="${bin.zipfile}">
+			<fileset dir="${build.bin.dir}" />
+		</zip>
+	</target>
+
+	<target name="create-project-zip" depends="init, prepare-dist" description="Creates a zip file with all project sources including the build script">
+		<property name="build.project.content.dir" location="${build.project.dir}/${ant.project.name}"/>
+		<delete dir="${build.project.content.dir}"/>
+		<mkdir dir="${build.project.content.dir}"/>
+		<copy todir="${build.project.content.dir}">
+			<fileset dir="${basedir}">
+				<exclude name="bin/**" />
+				<exclude name="dist/**" />
+				<exclude name="tmp/**" />
+				<exclude name="build/**" />
+				<exclude name="build.local.properties" />				
+			</fileset>
+		</copy>
+		<mkdir dir="${build.project.content.dir}/lib"/>		
+		<zip destfile="${project.zipfile}">
+			<fileset dir="${build.project.dir}"/>
+		</zip>
+	</target>
+
+	<target name="dist" depends="init, clean, prepare-dist, create-src-zip, create-bin-zip, create-project-zip">
+	</target>
+
+	<target name="main" depends="init, dist">
+	</target>
+</project>
