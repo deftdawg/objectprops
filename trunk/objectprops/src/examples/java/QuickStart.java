@@ -1,4 +1,5 @@
 import java.awt.Rectangle;
+import java.util.Properties;
 
 import com.google.code.objectprops.ObjectPropertiesStore;
 
@@ -18,8 +19,9 @@ public class QuickStart {
         // write the rectangle's state to the location "window.bounds" inside the store         
         store.writeObject("window.bounds", rect);
         
-        // let's print the contents to System.out
-        store.getDatabase().store( System.out, "My application preferences");
+        // let's get the Properties object and print the contents to System.out
+        Properties properties = store.getDatabase();
+        properties.store( System.out, "My application preferences");
         
         //// Part 2: reading an object from the store
         // create a new rectangle using the state from the location "window.bounds" 
