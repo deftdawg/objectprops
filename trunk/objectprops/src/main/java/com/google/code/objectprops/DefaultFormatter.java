@@ -2,6 +2,7 @@ package com.google.code.objectprops;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.Date;
 
 import com.google.code.objectprops.format.BigDecimalFormat;
@@ -24,6 +25,7 @@ import com.google.code.objectprops.format.LongPrimitiveFormat;
 import com.google.code.objectprops.format.ShortFormat;
 import com.google.code.objectprops.format.ShortPrimitiveFormat;
 import com.google.code.objectprops.format.StringFormat;
+import com.google.code.objectprops.format.URLFormat;
 
 /**
  * The DefaultFormatter is a formatter with preconfigured formats for generally used types.
@@ -53,5 +55,6 @@ public class DefaultFormatter extends Formatter {
         this.setFormat(new BigDecimalFormat(), BigDecimal.class);
         this.setFormat(new BigIntegerFormat(), BigInteger.class);
         this.setFormat(new DateFormat(), Date.class);
+        this.setFormat(new URLFormat(), URL.class);
     }
 }

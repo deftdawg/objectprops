@@ -53,9 +53,10 @@ public class Formatter {
      * @param type
      * @return the String representation of the given object created by the format assigned to given type
      * @throws UnknownFormatException
+     * @throws FormatException
      */
     public String format(Object obj, Class type)
-        throws UnknownFormatException {
+        throws UnknownFormatException, FormatException {
         IFormat format = this.findFormat(type);
         if (format != null) {
             return format.format(obj);
@@ -70,9 +71,10 @@ public class Formatter {
      * @param type
      * @return the newly created object
      * @throws UnknownFormatException
+     * @throws FormatException
      */
     public Object parse(String str, Class type)
-        throws UnknownFormatException {
+        throws UnknownFormatException, FormatException {
         IFormat format = this.findFormat(type);
         if (format != null) {
             return format.parse(str);
