@@ -25,10 +25,10 @@ public class QuickStart {
         
         //// Part 2: reading an object from the store
         // create a new rectangle using the state from the location "window.bounds" 
-        Rectangle retrieved = (Rectangle)store.readObject("window.bounds", Rectangle.class);
+        Rectangle newRect = (Rectangle)store.readObject("window.bounds", Rectangle.class);
         
         // print the new rectangle to System.out
-        System.out.println("retrieved: "+retrieved.toString());
+        System.out.println("newRect: "+newRect.toString());
         
     }
 }
