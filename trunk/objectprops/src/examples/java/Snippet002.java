@@ -3,7 +3,10 @@ import java.io.IOException;
 
 import com.google.code.objectprops.ObjectPropertiesStore;
 
-
+/**
+ * 
+ * @author Michael Karneim
+ */
 public class Snippet002 {
     
     public static void main(String[] args) throws IOException {
