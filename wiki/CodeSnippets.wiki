@@ -1,0 +1,3 @@
+#summary short but complete code samples for copy & paste
+
+Blah...
