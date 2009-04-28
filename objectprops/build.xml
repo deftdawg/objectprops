@@ -4,7 +4,7 @@
 	
 	<property file="build.local.properties" />
 
-	<property name="project.version" value="1.0.0" />
+	<property name="project.version" value="1.0.1" />
 	<property name="project.title" value="ObjectProps" />
 	<property name="project.vendor" value="Michael Karneim" />
 	
