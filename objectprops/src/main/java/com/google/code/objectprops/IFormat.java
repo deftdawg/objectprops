@@ -11,13 +11,15 @@ public interface IFormat {
      * Converts the given Java object into a String.
      * @param obj
      * @return a string representation of the given Java object
+     * @throws FormatException
      */
-    public String format(Object obj);
+    public String format(Object obj) throws FormatException;
     
     /**
      * Converts the given String into a new Java object.
      * @param str
-     * @return a new Java object 
+     * @return a new Java object
+     * @throws FormatException 
      */
-    public Object parse(String str);
+    public Object parse(String str) throws FormatException;
 }

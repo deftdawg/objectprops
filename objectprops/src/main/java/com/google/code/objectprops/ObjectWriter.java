@@ -128,6 +128,8 @@ class ObjectWriter {
                 return true;
             } catch (UnknownFormatException ex) {
                 throw new ObjectPropertiesStoreException(ex);
+            } catch (FormatException ex) {
+            	throw new ObjectPropertiesStoreException(ex);
             }
         } else {
             return false;

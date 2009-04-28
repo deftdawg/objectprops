@@ -1,6 +1,12 @@
 package com.google.code.objectprops;
 
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import com.google.code.objectprops.ObjectPropertiesStore;
 import com.google.code.objectprops.ObjectPropertiesStoreException;
@@ -33,7 +39,7 @@ public class TestObjectPropertiesStore extends TestCase {
         this.assertEquals("text", "Hello, World!", text);
     }
 
-    public void testReadObjectAsString()
+    public void testReadObjectWithString()
        throws ObjectPropertiesStoreException {
        store.writeObject("Hello, World!");
        String result = (String)store.readObject(String.class);
@@ -57,11 +63,30 @@ public class TestObjectPropertiesStore extends TestCase {
     public void testWriteObjectWithBigInteger()
         throws ObjectPropertiesStoreException {
         store.writeObject( new BigInteger("42"));
-        store.getDatabase().list(System.out);
+        
         String result = store.getDatabase().getProperty("");
         this.assertEquals("result", "42", result);
     }
 
+    public void testWriteObjectWithDate()
+    throws ObjectPropertiesStoreException, ParseException {
+    	SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+    	Date aDate = dateformat.parse("2008-12-31");
+    	
+	    store.writeObject( aDate);
+	    Date result = (Date)store.readObject(Date.class);
+	    this.assertEquals("result", aDate, result);
+	}
+    
+    public void testWriteObjectWithURL()
+    throws ObjectPropertiesStoreException, MalformedURLException {
+    	URL url = new URL("http://code.google.com/p/objectprops/");
+    	
+	    store.writeObject( url);
+	    store.getDatabase().list(System.out);
+	    URL result = (URL)store.readObject(URL.class);
+	    this.assertEquals("result", url, result);
+	}
     
     public void testWriteObjectWithPath()
         throws ObjectPropertiesStoreException {
