@@ -1,15 +1,12 @@
 package com.google.code.objectprops;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-
-import com.google.code.objectprops.ObjectPropertiesStore;
-import com.google.code.objectprops.ObjectPropertiesStoreException;
 
 import junit.framework.TestCase;
 
@@ -78,12 +75,22 @@ public class TestObjectPropertiesStore extends TestCase {
 	    this.assertEquals("result", aDate, result);
 	}
     
+    public void testWriteObjectWithFile()
+    throws ObjectPropertiesStoreException, ParseException {
+    	File aFile = new File("../somedir/somefile.txt");
+    	
+	    store.writeObject( aFile);
+
+	    File result = (File)store.readObject(File.class);
+	    this.assertEquals("result", aFile, result);
+	}
+    
     public void testWriteObjectWithURL()
     throws ObjectPropertiesStoreException, MalformedURLException {
     	URL url = new URL("http://code.google.com/p/objectprops/");
     	
 	    store.writeObject( url);
-	    store.getDatabase().list(System.out);
+	    
 	    URL result = (URL)store.readObject(URL.class);
 	    this.assertEquals("result", url, result);
 	}
