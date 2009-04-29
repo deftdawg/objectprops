@@ -11,6 +11,8 @@
 	<property name="compile.debug" value="true" />
 	<property name="compile.deprecation" value="false" />
 	<property name="compile.optimize" value="true" />
+	<property name="compile.source" value="1.2" />
+	<property name="compile.target" value="1.2" />
 
 	<!-- Folders and files -->
 	<property name="src.dir" location="${basedir}/src" />
@@ -62,7 +64,10 @@
 	</target>
 
 	<target name="compile-main" depends="init, prepare-compile">
-		<javac classpathref="class.path" destdir="${build.classes.dir}" source="1.4" target="1.4" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+		<javac classpathref="class.path" destdir="${build.classes.dir}" 
+			   source="${compile.source}" target="${compile.target}" 
+			   debug="${compile.debug}" deprecation="${compile.deprecation}" 
+			   optimize="${compile.optimize}">
 			<src path="${src.main.java.dir}" />
 		</javac>
 	</target>
@@ -78,7 +83,8 @@
 	<target name="prepare-classes-jar" depends="init, prepare-compile">
 		<mkdir dir="${build.classes.dir}/META-INF" />
 		<copy todir="${build.classes.dir}/META-INF" >
-			<fileset dir="${basedir}" includes="readme.txt license.txt lgpl.txt 3rdparty-licenses.txt" />
+			<fileset dir="${basedir}" 
+				     includes="readme.txt license.txt lgpl.txt" />
 		</copy>
 	</target>
 	
@@ -105,7 +111,8 @@
 		<mkdir dir="${build.src.dir}" />
 		<mkdir dir="${build.src.dir}/META-INF" />
 		<copy todir="${build.src.dir}/META-INF" >
-			<fileset dir="${basedir}" includes="readme.txt license.txt lgpl.txt" />
+			<fileset dir="${basedir}" 
+				     includes="readme.txt license.txt lgpl.txt" />
 		</copy>
 		<copy todir="${build.src.dir}" >
 			<fileset dir="${src.main.java.dir}" />						
