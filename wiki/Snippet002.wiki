@@ -1,5 +1,6 @@
-#sidebar CodeSnippets
 #summary writing / reading an array
+#labels Type-Snippet
+#sidebar CodeSnippets
 {{{
 import java.awt.Rectangle;
 import java.io.IOException;
