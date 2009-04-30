@@ -32,6 +32,10 @@
 	
 	<property name="dist.dir" location="${basedir}/dist" />
 	
+	<property name="ext.dir" location="${basedir}/ext" />
+	<property name="ant-googlecode.lib.dir" location="${ext.dir}/ant-googlecode" />
+	
+	
 	<!-- Filesets and paths -->
 	<fileset id="build.classes.fileset" dir="${build.classes.dir}" description="Compiled classes without tests.">
 		<exclude name="**/*Test.class" />
@@ -152,7 +156,8 @@
 				<exclude name="dist/**" />
 				<exclude name="tmp/**" />
 				<exclude name="build/**" />
-				<exclude name="build.local.properties" />				
+				<exclude name="build.local.properties" />		
+				<exclude name="build.credentials" />
 			</fileset>
 		</copy>
 		<mkdir dir="${build.project.content.dir}/lib"/>		
@@ -160,12 +165,60 @@
 			<fileset dir="${build.project.dir}"/>
 		</zip>
 	</target>
-
 	
-
 	<target name="dist" depends="init, clean, create-src-zip, create-bin-zip, create-project-zip">
 	</target>
 
+	<!--#################### Release targets ########################-->
+	<target name="release" depends="dist" description="Upload files to to google code site">
+		<path id="ant-googlecode.classpath">
+			<fileset dir="${ant-googlecode.lib.dir}">
+				<include name="*.jar" />
+			</fileset>	
+		</path>
+	    <taskdef name="gcupload" classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask" 
+	    	                     classpathref="ant-googlecode.classpath" />
+
+	    <property file="build.credentials" />
+	    <fail unless="gc.username" message="Missing property 'gc.username' from file 'build.credentials'."/>
+	    <fail unless="gc.password" message="Missing property 'gc.password' from file 'build.credentials'."/>
+
+	    <property name="release.label" value="Release-Final"/>
+		<basename file="${src.zipfile}" property="src.zipfile.name"/>
+		
+		
+		<basename file="${project.zipfile}" property="project.zipfile.name"/>		
+	    <gcupload filename="${project.zipfile}" 
+	              username="${gc.username}" 
+	              password="${gc.password}" 
+	           projectname="${ant.project.name}"    
+	      targetfilename="${project.zipfile.name}"
+	             summary="${project.title} ${project.version} source code with build file, unit test, and sample code"
+	              labels="Type-Project, ${release.label}" />
+		
+		<basename file="${bin.zipfile}" property="bin.zipfile.name"/>
+		<gcupload filename="${bin.zipfile}" 
+	              username="${gc.username}" 
+	              password="${gc.password}" 
+	           projectname="${ant.project.name}"    
+	      targetfilename="${bin.zipfile.name}"
+	             summary="${project.title} ${project.version} binaries"
+	              labels="Type-Binary, Featured, ${release.label}" />
+		
+		<basename file="${src.zipfile}" property="src.zipfile.name"/>
+		<gcupload filename="${src.zipfile}" 
+	              username="${gc.username}" 
+	              password="${gc.password}" 
+	           projectname="${ant.project.name}"    
+	      targetfilename="${src.zipfile.name}"
+	             summary="${project.title} ${project.version} source code"
+	              labels="Type-Source, ${release.label}" />
+	</target>
+
+	
+	<!--#################### Main targets ########################-->
+
 	<target name="main" depends="init, dist">
 	</target>
+	
 </project>
