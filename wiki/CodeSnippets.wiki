@@ -1,4 +1,5 @@
 #summary short but complete code samples for copy & paste
+#labels Type-Sidebar
 
   * [Snippet001]
   * [Snippet002]
