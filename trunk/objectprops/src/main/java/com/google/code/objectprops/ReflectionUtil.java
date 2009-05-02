@@ -74,6 +74,42 @@ class ReflectionUtil {
         return reflectionFactory.newConstructorForSerialization(type, constr);
     }
 
+    public void setArrayValue(Object arrayObj, int index, Object value) 
+    throws ObjectPropertiesStoreException {
+    	if ( arrayObj.getClass().isArray()==false) {
+    		throw new IllegalArgumentException("arrayObj is no array");
+    	}
+    	Class type = arrayObj.getClass().getComponentType();
+    	
+    	if ( value != null ) {
+	    	if (type.isPrimitive()) {
+	            if (type.equals(Integer.TYPE)) {
+	            	Array.setInt(arrayObj, index, ((Integer)value).intValue());
+	            } else if (type.equals(Long.TYPE)) {
+	            	Array.setLong(arrayObj, index, ((Long)value).longValue());
+	            } else if (type.equals(Short.TYPE)) {
+	            	Array.setShort(arrayObj, index, ((Short)value).shortValue());
+	            } else if (type.equals(Character.TYPE)) {
+	            	Array.setChar(arrayObj, index, ((Character)value).charValue());
+	            } else if (type.equals(Byte.TYPE)) {
+	            	Array.setByte(arrayObj, index, ((Byte)value).byteValue());
+	            } else if (type.equals(Float.TYPE)) {
+	            	Array.setFloat(arrayObj, index, ((Float)value).floatValue());
+	            } else if (type.equals(Double.TYPE)) {
+	            	Array.setDouble(arrayObj, index, ((Double)value).doubleValue());
+	            } else if (type.equals(Boolean.TYPE)) {
+	            	Array.setBoolean(arrayObj, index, ((Boolean)value).booleanValue());
+	            } else {
+	                throw new RuntimeException("Could not set array elements with unknown component type "+  type);
+	            }
+	        } else {
+	        	if ( type.isAssignableFrom( value.getClass())==false) {
+	        		throw new IllegalArgumentException("value must be instance of array's component type "+type.getName()+" but was "+value.getClass().getName());
+	        	}
+	        	Array.set(arrayObj, index, value);
+	        }
+    	}
+    }
     public void setFieldValue(Field field, Object object, Object value)
         throws ObjectPropertiesStoreException {
         try {

@@ -180,13 +180,15 @@ class ObjectReader {
     private Object loadArrayValue(Class componentType, int size)
         throws ObjectPropertiesStoreException {
         Object arrayObj = Array.newInstance(componentType, size);
-        Object[] array = reflectionUtil.toObjectArray(arrayObj);
-        for (int i = 0; i < array.length; i++) {
+        final int len = Array.getLength(arrayObj);
+        for (int i = 0; i < len; i++) {
             this.getPath().addElement("" + i);
-            array[i] = loadValue(componentType);
+            Object value = loadValue(componentType);
+            reflectionUtil.setArrayValue(arrayObj, i, value);
             this.getPath().removeLastElement();
         }
-        return array;
+        return arrayObj;
+    
     }
 
     private Object loadComplexValue(Class type)

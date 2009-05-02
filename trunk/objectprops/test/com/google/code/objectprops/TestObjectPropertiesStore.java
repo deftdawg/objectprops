@@ -95,6 +95,21 @@ public class TestObjectPropertiesStore extends TestCase {
 	    this.assertEquals("result", url, result);
 	}
     
+    public void testWriteObjectWithIntVector()
+    throws ObjectPropertiesStoreException, MalformedURLException {
+    	IntVector vector = new IntVector();
+    	vector.elements = new int[5];
+    	for ( int i=0; i<vector.elements.length; ++i) {
+    		vector.elements[i] = i;
+    	}
+	    store.writeObject( vector);
+	    
+	    store.getDatabase().list(System.out);
+	    
+	    IntVector result = (IntVector)store.readObject(IntVector.class);
+	    this.assertEquals("result", vector, result);
+	}
+    
     public void testWriteObjectWithPath()
         throws ObjectPropertiesStoreException {
         store.writeObject("my.path", "Hello, World!");
@@ -215,15 +230,11 @@ public class TestObjectPropertiesStore extends TestCase {
             b.personnel[i].lastname = "lastname" + i;
         }
         store.writeObject(b);
-//        store.getProperties().list(System.out);
-//        System.out.println("path=" + store.getLocation().getPath());
 
         Person newP = new Person();
         newP.firstname = "Donald";
         newP.lastname = "Duck";
         store.writeObject("personnel.5", newP);
-//        store.getProperties().list(System.out);
-//        System.out.println("path=" + store.getLocation().getPath());
 
         Company bLoad = (Company)store.readObject(Company.class);
         this.assertNotNull("bLoad", bLoad);
@@ -268,7 +279,16 @@ class Address {
         this.zipcode = zip;
     }
 
+    public int hashCode() {
+    	return street.hashCode() * 37 
+    		+ city.hashCode() * 41 
+    		+ state.hashCode() * 43 
+    		+ zipcode;
+    }
     public boolean equals(Object other) {
+    	if ( other == this) {
+    		return true;
+    	}
         if (other == null) {
             return false;
         }
@@ -281,4 +301,44 @@ class Address {
             && this.state.equals(oA.state)
             && this.zipcode == oA.zipcode;
     }
+}
+
+class IntVector {
+	public int[] elements;
+	
+	public int hashCode() {
+		if ( elements == null || elements.length == 0) {
+			return 0;
+		} else {
+			return elements[0];
+		}
+	}
+	
+	public boolean equals(Object other) {
+		if ( other == this) {
+    		return true;
+    	}
+		if (other == null) {
+            return false;
+        }
+        if (other.getClass() != this.getClass()) {
+            return false;
+        }
+        IntVector oI = (IntVector)other;
+        if ( this.elements == oI.elements) {
+        	return true;
+        }
+        if ( this.elements == null || oI.elements == null) {
+        	return false;
+        }
+        if ( this.elements.length != oI.elements.length) {
+        	return false;
+        }
+        for( int i=0; i<this.elements.length; ++i) {
+        	if ( this.elements[i] != oI.elements[i]) {
+        		return false;
+        	}
+        }
+        return true;
+	}
 }
