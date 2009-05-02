@@ -1,0 +1,27 @@
+#summary this is a dummy article
+
+Blah...
+<wiki:comment>
+This text will be removed from the rendered page.
+</wiki:comment>
+
+Blah...
+
+<code language="java" insert="QuickStart.java/1">
+    public static void main(String[] args) throws IOException {
+        
+        Rectangle rect = new Rectangle(100,10,400,300);
+        
+        // writing an object into the store
+        ObjectPropertiesStore store = new ObjectPropertiesStore();
+        store.writeObject("window.bounds", rect);
+        
+        store.getDatabase().store( System.out, "My application preferences");
+        
+        // reading an object 
+        Rectangle retrieved = (Rectangle)store.readObject("window.bounds", Rectangle.class);
+        
+        System.out.println("retrieved: "+retrieved.toString());
+        
+    }
+</code>
