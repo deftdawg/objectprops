@@ -87,10 +87,7 @@ public class TestObjectPropertiesStore extends TestCase {
 
 	public void testWriteObjectWithIntVector() throws ObjectPropertiesStoreException, MalformedURLException {
 		IntVector vector = new IntVector();
-		vector.elements = new int[5];
-		for (int i = 0; i < vector.elements.length; ++i) {
-			vector.elements[i] = i;
-		}
+		vector.elements = new int[] {0,1,2,3,4};
 		store.writeObject(vector);
 
 		store.getDatabase().list(System.out);
