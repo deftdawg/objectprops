@@ -1,6 +1,6 @@
 #summary this is a dummy article
 
-<table border="0">
+<table border="0" width="100%">
 <tr><td width="700px">bla</td><td width="100px" align="right">lall</td></tr>
 </table>
 
