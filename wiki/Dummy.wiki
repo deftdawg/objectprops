@@ -1,5 +1,9 @@
 #summary this is a dummy article
 
+<table border="0">
+<tr><td>bla</td><td>lall</td></tr>
+</table>
+
 Blah...
 <wiki:comment>
 This text will be removed from the rendered page.
