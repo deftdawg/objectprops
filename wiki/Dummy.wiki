@@ -1,7 +1,7 @@
 #summary this is a dummy article
 
 <table border="0">
-<tr><td width="700px">bla</td><td width="100px">lall</td></tr>
+<tr><td width="700px">bla</td><td width="100px" align="right">lall</td></tr>
 </table>
 
 Blah...
