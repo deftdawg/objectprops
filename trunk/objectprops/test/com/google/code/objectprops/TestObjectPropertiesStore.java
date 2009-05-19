@@ -98,9 +98,7 @@ public class TestObjectPropertiesStore extends TestCase {
         throws ObjectPropertiesStoreException, MalformedURLException {
         IntVector vector = new IntVector();
         vector.elements = new int[] { 0, 1, 2, 3, 4 };
-        store.writeObject(vector);
-
-        store.getDatabase().list(System.out);
+        store.writeObject(vector);        
 
         IntVector result = (IntVector)store.readObject(IntVector.class);
         this.assertEquals("result", vector, result);
@@ -160,15 +158,16 @@ public class TestObjectPropertiesStore extends TestCase {
         this.assertEquals("result.firstname", orig.firstname, result.firstname);
     }
 
-    public void testTransientFields() throws ObjectPropertiesStoreException {
-        TransObject objIn = new TransObject(1,2);
-        store.writeObject("obj", objIn);
+    public void testTransientFieldsWillNotBeInitialized() throws ObjectPropertiesStoreException {
+        TransObject objWrite = new TransObject(1,2);
+        store.writeObject("obj", objWrite);
         
-        TransObject objOut = (TransObject) store.readObject("obj",  TransObject.class);
+        TransObject objRead = (TransObject) store.readObject("obj",  TransObject.class);
         
-        this.assertNotNull("objOut", objOut);
-        this.assertEquals("objOut.num", objIn.num, objOut.num);
-        this.assertEquals("objOut.transNum", 10, objOut.transNum);
+        this.assertNotNull("objOut", objRead);
+        this.assertEquals("objOut.num", objWrite.num, objRead.num);
+        this.assertEquals("objOut.transNum", 0, objRead.transNum);
+        this.assertEquals("objOut.transString", null, objRead.transString);
     }
     
     public void testComplex()
@@ -347,6 +346,8 @@ class IntVector {
 class TransObject {
     public transient int transNum;
     public int num;
+    public transient String transString = "hello";
+    
     private TransObject() {
         num = 5;
         transNum = 10;
@@ -358,17 +359,6 @@ class TransObject {
         this.transNum = transNum;
     }
 
-    public int getTransNum() {
-        return transNum;
-    }
-    public void setTransNum(int transNum) {
-        this.transNum = transNum;
-    }
-    public int getNum() {
-        return num;
-    }
-    public void setNum(int num) {
-        this.num = num;
-    }
+    
     
 }
