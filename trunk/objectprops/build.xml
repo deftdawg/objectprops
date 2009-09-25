@@ -34,6 +34,7 @@
 	<property name="build.manifest.file" location="${build.manifest.dir}/manifest.mf" />
 	
 	<property name="dist.dir" location="${basedir}/dist" />
+	<property name="dist.javadoc.dir" value="${dist.dir}/javadoc"/>
 	
 	<property name="ext.dir" location="${basedir}/ext" />
 	<property name="ant-googlecode.lib.dir" location="${ext.dir}/ant-googlecode" />
@@ -205,6 +206,16 @@
 	</target>
 	
 	<target name="dist" depends="init, clean, create-zips">
+	</target>
+	
+	<target name="create-javadoc-dist" depends="init, run-javadoc">		
+		<delete dir="${dist.javadoc.dir}"/>
+		<mkdir dir="${dist.javadoc.dir}"/>
+		<copy todir="${dist.javadoc.dir}">
+			<fileset dir="${build.javadoc.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<!--#################### Upload target ########################-->
